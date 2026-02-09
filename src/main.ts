@@ -1,5 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as firebaseAdmin from 'firebase-admin';
+import * as fs from 'fs';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -23,7 +25,16 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
+  const firebasefilepath = 'src/auth/firebasekey.json';
+  const FireBaseServiceAccount = JSON.parse(
+    fs.readFileSync(firebasefilepath).toString(),
+  );
+  if (firebaseAdmin.apps.length === 0) {
+    console.log('initialize firebase application');
+    firebaseAdmin.initializeApp({
+      credential: firebaseAdmin.credential.cert(FireBaseServiceAccount),
+    });
+  }
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
