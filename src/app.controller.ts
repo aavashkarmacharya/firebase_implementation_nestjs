@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { user } from './user.entity';
-import { AuthGuard } from '@nestjs/passport';
+//import { AuthGuard } from '@nestjs/passport';
 import { registeruserdto } from './registeruser.dto';
+import { AuthGuard } from './auth/auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
@@ -13,7 +15,9 @@ export class AppController {
     return await this.appService.registeruser(dto);
   }
     */
-  @UseGuards(AuthGuard('jwt'))
+
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth('firebase-auth')
   @Post('getuser')
   async getuser() {
     return await this.appService.showalluser();

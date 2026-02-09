@@ -1,10 +1,17 @@
-import { Body, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Injectable,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { user } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { registeruserdto } from './registeruser.dto';
 import * as firebaseAdmin from 'firebase-admin';
 import { register } from 'module';
+import { AuthGuard } from './auth/auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Injectable()
 export class AppService {

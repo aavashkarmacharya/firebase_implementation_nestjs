@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { login, logindata } from './auth.dto';
-import { ref } from 'process';
-import { ApiExpectationFailedResponse } from '@nestjs/swagger';
 import axios from 'axios';
+import * as firebaseAdmin from 'firebase-admin';
 
 @Injectable()
 export class authservice {
@@ -46,5 +45,19 @@ export class authservice {
       headers: { 'Content-Type': 'application/json' },
     });
     return response.data;
+  }
+  async validaterequest(req: any): Promise<boolean> {
+    const authheader = req.headers['authorization'];
+    if (!authheader) {
+      return false;
+    }
+    const [bearer, token] = authheader.split(' ');
+    if (bearer !== 'Bearer') {
+      console.log('invalid input make sure bearer is Bearer!!');
+      return false;
+    }
+    const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
+    console.log(`DecodedToken = ${decodedToken}`);
+    return true;
   }
 }

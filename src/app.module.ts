@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PassportModule } from '@nestjs/passport';
 import { user } from './user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configDotenv } from 'dotenv';
 import { authmodule } from './auth/auth.module';
 import { authcontroller } from './auth/auth.controller';
 import { authservice } from './auth/auth.service';
+import { AuthGuard } from './auth/auth.guard';
 configDotenv();
 @Module({
   imports: [
@@ -22,10 +22,9 @@ configDotenv();
       synchronize: true,
     }),
     TypeOrmModule.forFeature([user]),
-    PassportModule,
     authmodule,
   ],
   controllers: [AppController, authcontroller],
-  providers: [AppService, authservice],
+  providers: [AppService, authservice, AuthGuard],
 })
 export class AppModule {}
