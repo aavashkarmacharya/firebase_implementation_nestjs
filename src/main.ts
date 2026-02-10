@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import * as firebaseAdmin from 'firebase-admin';
 import * as fs from 'fs';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Admin } from 'typeorm';
+import { Get } from '@nestjs/common';
+import { getMessaging } from 'firebase-admin/messaging';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

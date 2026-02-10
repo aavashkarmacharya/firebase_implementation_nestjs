@@ -1,5 +1,12 @@
-import { IsEmail, IsNotEmpty, MinLength, IsBoolean } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  MinLength,
+  IsBoolean,
+  IsOptional,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Optional } from '@nestjs/common';
 
 export class login {
   @ApiProperty({ example: 'john@gmail.com' })
@@ -10,6 +17,8 @@ export class login {
   @IsNotEmpty()
   @MinLength(6)
   password: string;
+  @IsOptional()
+  fcmToken?: string;
 }
 
 export class logindata {
@@ -24,4 +33,6 @@ export class logindata {
   @ApiProperty({ example: true })
   @IsBoolean()
   returnSecureToken: boolean;
+  @MinLength(5)
+  fcmToken?: string;
 }

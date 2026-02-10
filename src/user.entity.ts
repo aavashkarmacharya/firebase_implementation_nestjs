@@ -29,4 +29,7 @@ export class user {
   })
   @Column({ unique: true })
   email: string;
+
+  @Column('text', { array: true, default: [] })
+  fcmtokens?: string[];
 }

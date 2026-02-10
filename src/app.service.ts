@@ -30,6 +30,20 @@ export class AppService {
       email: registeruserdto.email,
       password: registeruserdto.password,
     });
+    const newuser = this.UserRepo.create({
+      name: registeruserdto.name,
+      password: registeruserdto.password,
+      email: registeruserdto.email,
+      fcmtokens: [registeruserdto.fcmtoken],
+    });
+    await this.UserRepo.save(newuser);
+    await firebaseAdmin.messaging().send({
+      token: registeruserdto.fcmtoken,
+      notification: {
+        title: 'User registration',
+        body: 'user sucessfully registered!',
+      },
+    });
     return user;
   }
 

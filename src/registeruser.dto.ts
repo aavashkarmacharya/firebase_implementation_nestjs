@@ -19,4 +19,6 @@ export class registeruserdto {
   })
   @MinLength(6)
   password: string;
+
+  fcmtoken: string;
 }

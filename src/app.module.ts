@@ -8,6 +8,7 @@ import { authmodule } from './auth/auth.module';
 import { authcontroller } from './auth/auth.controller';
 import { authservice } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
+import { NotificationService } from './notification/notification.service';
 configDotenv();
 @Module({
   imports: [
@@ -25,6 +26,6 @@ configDotenv();
     authmodule,
   ],
   controllers: [AppController, authcontroller],
-  providers: [AppService, authservice, AuthGuard],
+  providers: [AppService, authservice, AuthGuard, NotificationService],
 })
 export class AppModule {}
