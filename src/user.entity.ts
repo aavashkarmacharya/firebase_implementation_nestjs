@@ -1,6 +1,7 @@
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Entity()
 export class user {
@@ -30,6 +31,7 @@ export class user {
   @Column({ unique: true })
   email: string;
 
-  @Column('text', { array: true, default: [] })
-  fcmtokens?: string[];
+  @Column({ nullable: true })
+  @IsOptional()
+  fcmToken?: string;
 }

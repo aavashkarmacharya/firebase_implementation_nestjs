@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class registeruserdto {
@@ -20,5 +20,6 @@ export class registeruserdto {
   @MinLength(6)
   password: string;
 
-  fcmtoken: string;
+  @IsOptional()
+  fcmtoken?: string;
 }

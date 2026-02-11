@@ -1,18 +1,10 @@
-import {
-  Body,
-  Injectable,
-  UnauthorizedException,
-  UseGuards,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { user } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { registeruserdto } from './registeruser.dto';
 import * as firebaseAdmin from 'firebase-admin';
 import { register } from 'module';
-import { AuthGuard } from './auth/auth.guard';
-import { ApiBearerAuth } from '@nestjs/swagger';
-
 @Injectable()
 export class AppService {
   constructor(
@@ -34,16 +26,18 @@ export class AppService {
       name: registeruserdto.name,
       password: registeruserdto.password,
       email: registeruserdto.email,
-      fcmtokens: [registeruserdto.fcmtoken],
+      fcmToken: registeruserdto.fcmtoken,
     });
     await this.UserRepo.save(newuser);
-    await firebaseAdmin.messaging().send({
-      token: registeruserdto.fcmtoken,
-      notification: {
-        title: 'User registration',
-        body: 'user sucessfully registered!',
-      },
-    });
+    if (registeruserdto.fcmtoken) {
+      await firebaseAdmin.messaging().send({
+        token: registeruserdto.fcmtoken,
+        notification: {
+          title: 'User registration',
+          body: 'user sucessfully registered!',
+        },
+      });
+    }
     return user;
   }
 
